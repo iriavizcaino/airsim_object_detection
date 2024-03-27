@@ -7,3 +7,6 @@ test:
 # Classes
 names:
   0: extinguisher
+  
+# Terminal code
+# yolo detect train data=dataset.yaml model=extinguisher.pt epochs=100 imgsz=640
