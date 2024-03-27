@@ -1,7 +1,8 @@
 import cv2
 from ultralytics import YOLO
 
-# Load the YOLOv8 model
+# Load the pretrained model
+# model = YOLO('yolov8n.pt')
 model = YOLO('extinguisher.pt')
 
 # Define a video capture object

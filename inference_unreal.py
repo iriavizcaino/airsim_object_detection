@@ -8,11 +8,11 @@ client.confirmConnection()
 camera_name = "0"
 image_type = airsim.ImageType.Scene
 
-# Load the YOLOv8 model
+## Load the pretrained model
+# model = YOLO('yolov8n.pt')
 model = YOLO('extinguisher.pt')
 
-
-# Loop through the video frames
+## Loop through the video frames
 while True:
 
     rawImage = client.simGetImage(camera_name, image_type)
