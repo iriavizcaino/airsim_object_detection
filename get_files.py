@@ -184,20 +184,20 @@ if __name__ == '__main__':
 
         
         dirs = os.listdir('./Files')
-        lenght = math.trunc(len(dirs)/2)
+        length = math.trunc(len(dirs)/2)+1
 
         for file in dirs:
-            for i in range(lenght):
-                if i <= lenght*0.75 and file.endswith(f'{i}.jpg'):
+            for i in range(length):
+                if i<=(length*0.75) and file.endswith(f'g{i}.jpg'):
                     shutil.copy(f"./Files/{file}", destination + "/train/images")
 
-                elif i <= lenght*0.75 and file.endswith(f'{i}.txt'):
+                elif i<=(length*0.75) and file.endswith(f'g{i}.txt'):
                     shutil.copy(f"./Files/{file}", destination + "/train/labels")
 
-                elif file.endswith(f'{i}.jpg'):
+                elif i>(length*0.75) and file.endswith(f'g{i}.jpg'):
                     shutil.copy(f"./Files/{file}", destination + "/valid/images")
 
-                elif file.endswith(f'{i}.txt'):
+                elif i>(length*0.75) and file.endswith(f'g{i}.txt'):
                     shutil.copy(f"./Files/{file}", destination + "/valid/labels")
 
 
