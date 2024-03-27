@@ -69,7 +69,7 @@ def change_ext_pose(client):
 
 if __name__ == '__main__':
     
-    # Define clients
+    # Define client
     client = airsim.VehicleClient()
     client.confirmConnection()
 
@@ -79,12 +79,6 @@ if __name__ == '__main__':
     client.simSetDetectionFilterRadius(camera_name, image_type, 200 * 100) 
     client.simAddDetectionFilterMeshName(camera_name, image_type, "10285_Fire_Extinguisher*") 
 
-
-    client.simSetVehiclePose(
-        client.simGetObjectPose('Inverted_Sphere_9'),
-        True
-    )
-
     # Create directory to save files
     try:
         os.mkdir("Files")
@@ -92,75 +86,124 @@ if __name__ == '__main__':
         shutil.rmtree('./Files')
         os.mkdir("Files")
 
+    
+    # Set vehicle pose in sphere center
+    client.simSetVehiclePose(
+        client.simGetObjectPose('Inverted_Sphere_9'),
+        True
+    )
+
     # Constants
-    cont = 1
+    cont = 0
     r = 2.9 # Sphere radius [m]
 
+    try:
+        while True:
+            if not client.simIsPause():
+                rawImage = client.simGetImage(camera_name, image_type)
+                if not rawImage:
+                    exit()
 
-    while True:
-        if not client.simIsPause():
-            rawImage = client.simGetImage(camera_name, image_type)
-            if not rawImage:
-                exit()
+                print(cont)
 
-            print(cont)
-
-            # Save files
-            png = cv2.imdecode(airsim.string_to_uint8_array(rawImage), cv2.IMREAD_UNCHANGED)
-            detects = client.simGetDetections(camera_name, image_type)
-            
-            if detects:
-                with open(f'Files/exting{cont}.txt','w') as f:
-                    for detect in detects:
-                        data = yolo_format(detect,png)
-                        f.write(data)
-            
-            cv2.imwrite(f'Files/exting{cont}.jpg',png)
-            
-            ## Change background
-            client.simSetObjectMaterialFromTexture(
-                'Inverted_Sphere_9',
-                random.choice(glob.glob('/home/catec/Documents/unreal_iria/backgrounds/*'))
-                # '/home/catec/Documents/unreal_iria/backgrounds/metro_noord_4k.exr'
-            )
-
-            ## Change extinguisher pose
-            # change_ext_pose(client)
-
-
-            ## Change camera pose
-            client.simSetVehiclePose(
-                airsim.Pose(airsim.Vector3r(0, 0, 0), airsim.to_quaternion(np.deg2rad(-20), 0, -cont*math.pi/4)),
-                True
-            )
-
-            veh_pose = client.simGetVehiclePose()
-
-
-            [b,y,a] = airsim.utils.to_eularian_angles(veh_pose.orientation)
-
-            rm  = [
-                [ np.cos(a) * np.cos(b) * np.cos(y) - np.sin(a) * np.sin(y),     -np.cos(a) * np.cos(b) * np.sin(y) - np.sin(a) * np.cos(y),     np.cos(a) * np.sin(b),  veh_pose.position.x_val],
-                [ np.sin(a) * np.cos(b) * np.cos(y) + np.cos(a) * np.sin(y),     -np.sin(a) * np.cos(b) * np.sin(y) + np.cos(a) * np.cos(y),     np.sin(a) * np.sin(b),  veh_pose.position.y_val],
-                [-np.sin(b) * np.cos(y)                                    ,      np.sin(b) * np.sin(y)                                    ,     np.cos(b)            ,  veh_pose.position.z_val],
-                [ 0,0,0,1],
-            ]
-
-            pos_rel = np.array([2,0,0.5,1])   # frente/izq/abajo
-
-            pos = np.matmul(rm,pos_rel)
-
-            client.simSetObjectPose(
-                '10285_Fire_Extinguisher_v3_iterations-2_2',
-                airsim.Pose(airsim.Vector3r(pos[0],pos[1],pos[2]), airsim.to_quaternion(np.deg2rad(random.randint(0,360)), np.deg2rad(random.randint(0,360)), np.deg2rad(random.randint(0,360)))),   
-                True
+                ## Save files
+                png = cv2.imdecode(airsim.string_to_uint8_array(rawImage), cv2.IMREAD_UNCHANGED)
+                detects = client.simGetDetections(camera_name, image_type)
+                
+                if detects:
+                    with open(f'Files/exting{cont}.txt','w') as f:
+                        for detect in detects:
+                            data = yolo_format(detect,png)
+                            f.write(data)
+                
+                cv2.imwrite(f'Files/exting{cont}.jpg',png)
+                
+                ## Change background
+                client.simSetObjectMaterialFromTexture(
+                    'Inverted_Sphere_9',
+                    random.choice(glob.glob('/home/catec/Documents/unreal_iria/backgrounds/*'))
                 )
 
-            time.sleep(0.1)
- 
-            cont +=1
-        else:
-            pass
+                ## Change camera pose
+                client.simSetVehiclePose(
+                    airsim.Pose(airsim.Vector3r(0, 0, 0), airsim.to_quaternion(np.deg2rad(-20), 0, -cont*math.pi/4)),
+                    True
+                )
+
+                veh_pose = client.simGetVehiclePose()
+
+
+                [b,y,a] = airsim.utils.to_eularian_angles(veh_pose.orientation)
+
+                rm  = [
+                    [ np.cos(a) * np.cos(b) * np.cos(y) - np.sin(a) * np.sin(y),     -np.cos(a) * np.cos(b) * np.sin(y) - np.sin(a) * np.cos(y),     np.cos(a) * np.sin(b),  veh_pose.position.x_val],
+                    [ np.sin(a) * np.cos(b) * np.cos(y) + np.cos(a) * np.sin(y),     -np.sin(a) * np.cos(b) * np.sin(y) + np.cos(a) * np.cos(y),     np.sin(a) * np.sin(b),  veh_pose.position.y_val],
+                    [-np.sin(b) * np.cos(y)                                    ,      np.sin(b) * np.sin(y)                                    ,     np.cos(b)            ,  veh_pose.position.z_val],
+                    [ 0,0,0,1],
+                ]
+
+                pos_rel = np.array([2,0,0.5,1])   # frente/izq/abajo
+
+                pos = np.matmul(rm,pos_rel)
+
+                client.simSetObjectPose(
+                    '10285_Fire_Extinguisher_v3_iterations-2_2',
+                    airsim.Pose(airsim.Vector3r(pos[0],pos[1],pos[2]), airsim.to_quaternion(np.deg2rad(random.randint(0,360)), np.deg2rad(random.randint(0,360)), np.deg2rad(random.randint(0,360)))),   
+                    True
+                    )
+
+                time.sleep(0.1)
+
+
+                cont +=1
+            else:
+                pass
+    except KeyboardInterrupt: 
+
+        destination = "/home/catec/Documents/unreal_iria/Extinguisher/extinguisher"
+
+        try:
+            os.mkdir(destination + "/train")
+            os.mkdir(destination + "/train/images")
+            os.mkdir(destination + "/train/labels")
+
+            os.mkdir(destination + "/valid")
+            os.mkdir(destination + "/valid/images")
+            os.mkdir(destination + "/valid/labels")
+        except:
+            shutil.rmtree('./extinguisher/train')
+            shutil.rmtree('./extinguisher/valid')
+
+            os.mkdir(destination + "/train")
+            os.mkdir(destination + "/train/images")
+            os.mkdir(destination + "/train/labels")
+
+            os.mkdir(destination + "/valid")
+            os.mkdir(destination + "/valid/images")
+            os.mkdir(destination + "/valid/labels")
+
+        
+        dirs = os.listdir('./Files')
+        lenght = math.trunc(len(dirs)/2)
+
+        for file in dirs:
+            for i in range(lenght):
+                if i <= lenght*0.75 and file.endswith(f'{i}.jpg'):
+                    shutil.copy(f"./Files/{file}", destination + "/train/images")
+
+                elif i <= lenght*0.75 and file.endswith(f'{i}.txt'):
+                    shutil.copy(f"./Files/{file}", destination + "/train/labels")
+
+                elif file.endswith(f'{i}.jpg'):
+                    shutil.copy(f"./Files/{file}", destination + "/valid/images")
+
+                elif file.endswith(f'{i}.txt'):
+                    shutil.copy(f"./Files/{file}", destination + "/valid/labels")
+
+
+
+
+
 
 
 
