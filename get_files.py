@@ -103,11 +103,11 @@ if __name__ == '__main__':
                 detects = client.simGetDetections(camera_name, image_type)
 
                 if detects:
-                    with open(f'Files/exting{cont}.txt','w') as f:
+                    with open(f'Files/label_{cont}.txt','w') as f:
                         for detect in detects:
                             data = yolo_format(detect,png)
                             f.write(data)
-                cv2.imwrite(f'Files/exting{cont}.jpg',png)
+                cv2.imwrite(f'Files/image_{cont}.jpg',png)
                 
                 ## Change background
                 client.simSetObjectMaterialFromTexture(
@@ -184,16 +184,16 @@ if __name__ == '__main__':
 
         for file in dirs:
             for i in range(length):
-                if i<=(length*0.75) and file.endswith(f'g{i}.jpg'):
+                if i<=(length*0.75) and file.endswith(f'_{i}.jpg'):
                     shutil.move(f"./Files/{file}", destination + "/train/images")
 
-                elif i<=(length*0.75) and file.endswith(f'g{i}.txt'):
+                elif i<=(length*0.75) and file.endswith(f'_{i}.txt'):
                     shutil.move(f"./Files/{file}", destination + "/train/labels")
 
-                elif i>(length*0.75) and file.endswith(f'g{i}.jpg'):
+                elif i>(length*0.75) and file.endswith(f'_{i}.jpg'):
                     shutil.move(f"./Files/{file}", destination + "/valid/images")
 
-                elif i>(length*0.75) and file.endswith(f'g{i}.txt'):
+                elif i>(length*0.75) and file.endswith(f'_{i}.txt'):
                     shutil.move(f"./Files/{file}", destination + "/valid/labels")
 
         time.sleep(0.1)
