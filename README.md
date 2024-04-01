@@ -23,7 +23,7 @@ In this repository you will find an object detection datasets generator (YOLO fo
 - Open an Unreal Project and create a sphere actor.
 - Enable **Polygon Editing** plugin and, in the sphere editor, select the entire element and flip normals.
 
-<img src=".doc/sphere_edit.png" width="200" height="100">
+![alt text for the image](.doc/sphere_edit.png){width=50%}
 
 
 - Check that the sphere is a stationary or movable object and change its scale as needed.
