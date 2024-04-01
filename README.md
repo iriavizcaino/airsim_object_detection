@@ -23,7 +23,8 @@ In this repository you will find an object detection datasets generator (YOLO fo
 - Open an Unreal Project and create a sphere actor.
 - Enable **Polygon Editing** plugin and, in the sphere editor, select the entire element and flip normals.
 
-![image](.doc/sphere_edit.png){height=50 width=60} 
+<img src=".doc/sphere_edit.png" width="200" height="100">
+
 
 - Check that the sphere is a stationary or movable object and change its scale as needed.
 
@@ -33,8 +34,7 @@ Steps:
 - Import 3D model of the object you want to detect.
 - Get the names of the sphere and detection object items and change it into `get_files.py`.
 
-
-![image](.doc/id_name.gif){width=50%} 
+<img src=".doc/id_name.gif" width="200" height="100">
 
 - Run Unreal with AirSim plugin enabled.  
 - Run `get_files.py` on a terminal and wait until the desired number of files are generated.  
