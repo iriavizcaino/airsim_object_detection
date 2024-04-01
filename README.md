@@ -25,6 +25,7 @@ In this repository you will find an object detection datasets generator (YOLO fo
 
 <center><img src=".doc/sphere_edit.png" width="400" height="300"></center>
 
+![image](.doc/id_name.gif){width=50%} 
 
 - Check that the sphere is a stationary or movable object and change its scale as needed.
 
