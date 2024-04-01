@@ -61,7 +61,7 @@ Dataset
 ```
 
 ### utils directory
-In this directory you can find two ways to get inference results:
+In this directory you can find two ways to get inference results:  
 - `inference_unreal.py`: runs an object detection model on video coming from airsim.  
 - `inference_webcam.py`: runs an object detection model on video coming from your webcam or any live video application.
 
