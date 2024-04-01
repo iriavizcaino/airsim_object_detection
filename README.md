@@ -1,7 +1,7 @@
 # Airsim Object Detection
-In this repository you will find an object detection datasets generator (YOLO format) and two ways to get inference results.
+In this repository you will find an object detection datasets generator (YOLO format) and some ways to get inference results.
 
-## Dependencies
+## Setup
 
 - Install Unreal Engine.  
 - Python packages: `pip3 install -r requirements.txt`
@@ -9,13 +9,24 @@ In this repository you will find an object detection datasets generator (YOLO fo
 ## Usage
 Steps:
 
+- Open an Unreal Project and create a sphere actor.
+- Enable **Polygon Editing** plugin and, in the sphere editor, select the entire element and flip normals.
+
+![image](.doc/sphere_edit.png)
+
+- Check that the sphere is a stationary or movable object and change its scale as needed.
+- Import 3D model of the object you want to detect.
+- Get the names of the sphere and detection object items and change it into `get_files.py`.
 - Run Unreal with AirSim plugin enabled.  
 - Run `get_files.py` on a terminal and wait until the desired number of files are generated.  
+
+### Get inference results
 - Train a pretrained model using the following command in the Dataset directory terminal:  
 `yolo detect train data=dataset.yaml model=extinguisher.pt epochs=100 imgsz=640`  
-- Run any of following scripts to get inference results:
+- Run any of following scripts saved in the **utils** directory to get inference results:
     - `inference_unreal.py`: runs an object detection model on video coming from airsim.  
     - `inference_webcam.py`: runs an object detection model on video coming from your webcam or any live video application.  
+    - In this directory you can also find the `gst-airsim-detection.py` script, which has been taken as an example for the realization of this repo.!!!!!
 
 ### Add backgrounds
-If you want to add or change backgrounds, download some HDRIs with **.ext** extension and save them on backgrounds directory
+If you want to add or change backgrounds, download some HDRIs with **.ext** extension and save them on backgrounds directory. You can also use image formats such as **.jpg** or **.png**, but this may be distorted.

@@ -12,7 +12,8 @@ import math
 
 get_width = lambda cv2_img : (cv2_img.shape[1])
 get_height = lambda cv2_img : (cv2_img.shape[0])
-EXTINGUISHER_OBJ_NAME = '10285_Fire_Extinguisher_v3_iterations-2_2'
+DET_OBJ_NAME = '10285_Fire_Extinguisher_v3_iterations-2_2'
+sphere_name = 'Inverted_Sphere_9'
 
 def yolo_format(det,png):
 
@@ -36,7 +37,7 @@ def yolo_format(det,png):
 
 
 def change_ext_pose(client):
-    curr_pos = client.simGetObjectPose(EXTINGUISHER_OBJ_NAME).position
+    curr_pos = client.simGetObjectPose(DET_OBJ_NAME).position
 
     new_pos = airsim.Vector3r(
         curr_pos.x_val + random.uniform(-2,2),
@@ -51,7 +52,7 @@ def change_ext_pose(client):
     )
 
     client.simSetObjectPose(
-        EXTINGUISHER_OBJ_NAME,
+        DET_OBJ_NAME,
         airsim.Pose(new_pos, new_orient),    # Random position and orientation
         # airsim.Pose(curr_pos, new_orient), # Random orientation
         True
@@ -68,20 +69,25 @@ if __name__ == '__main__':
     image_type = airsim.ImageType.Scene
 
     client.simSetDetectionFilterRadius(camera_name, image_type, 200 * 100) 
-    client.simAddDetectionFilterMeshName(camera_name, image_type, EXTINGUISHER_OBJ_NAME) 
+    client.simAddDetectionFilterMeshName(camera_name, image_type, DET_OBJ_NAME) 
 
     ## Create directory to save files
-    os.mkdir("Files")
+    try:
+        os.mkdir("Files")
+    except:
+        shutil.rmtree("./Files")
+        os.mkdir("Files")
+
  
     ## Set vehicle pose in sphere center
     client.simSetVehiclePose(
-        client.simGetObjectPose('Inverted_Sphere_9'),
+        client.simGetObjectPose(sphere_name), # in sphere center
         True
     )
 
     ## Constants
     cont = 0
-    r = 2.9 # Sphere radius [m]
+    r = client.simGetObjectScale(sphere_name).get_length()/2
 
     try:
         while True:
@@ -105,17 +111,17 @@ if __name__ == '__main__':
                 
                 ## Change background
                 client.simSetObjectMaterialFromTexture(
-                    'Inverted_Sphere_9',
+                    sphere_name,
                     random.choice(glob.glob(os.getcwd() + '/backgrounds/*'))
                 )
 
                 ## Change only object pose
                 #change_ext_pose(client)
 
-                ## Change camera and object pose
+                ## Change camera orientation
                 client.simSetVehiclePose(
                     airsim.Pose(
-                        airsim.Vector3r(0, 0, 0),
+                        client.simGetVehiclePose().position,
                         airsim.to_quaternion(np.deg2rad(-20), 0, -cont*math.pi/4)
                     ),
                     True
@@ -133,8 +139,9 @@ if __name__ == '__main__':
                 pos_rel = np.array([2,0,0.5,1]) # Object-camera distance
                 pos = np.matmul(rm,pos_rel)
 
+                ## Change object pose
                 client.simSetObjectPose(
-                    EXTINGUISHER_OBJ_NAME,
+                    DET_OBJ_NAME,
                     airsim.Pose(
                         airsim.Vector3r(pos[0],pos[1],pos[2]),
                         airsim.to_quaternion(np.deg2rad(random.randint(0,360)), np.deg2rad(random.randint(0,360)), np.deg2rad(random.randint(0,360)))
