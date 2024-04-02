@@ -31,7 +31,7 @@ In this repository you will find an object detection datasets generator (YOLO fo
 Steps:
 
 - Import 3D model of the object you want to detect.
-- Get the names of the sphere and detection object items and change it into `get_files.py`.
+- Get the ID names of the sphere and detection object items and change it into `get_files.py`.
 
     ![image](.doc/id_name.gif)
 
