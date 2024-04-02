@@ -13,13 +13,13 @@ In this repository you will find an object detection datasets generator (YOLO fo
     ```
 - Install Python client
     ```
-    cd PythonClient
+    cd AirSim/PythonClient
     pip3 install msgpack-rpc-python
     pip3 install .
     ```
+- Install Unreal Engine. 
 
 ## Setup
-- Install Unreal Engine.  
 - Open an Unreal Project and create a sphere actor.
 - Enable **Polygon Editing** plugin and, in the sphere editor, select the entire element and flip normals.
 
@@ -37,23 +37,23 @@ Steps:
 
 - Run Unreal with AirSim plugin enabled.  
 - Run `get_files.py` on a terminal and wait until the desired number of files are generated.  
-- If you want to add or change backgrounds, download some HDRIs with **.ext** extension and save them on backgrounds directory. You can also use image formats such as **.jpg** or **.png**, but this may be distorted.
+- If you want to add or change backgrounds, download some HDRIs with **.ext** extension and save them on backgrounds directory. You can also use image formats such as **.jpg** or **.png**, but these may be distorted.
 
 ### Dataset format
 ```
 Dataset
 ├── dataset.yaml
 ├── train
-    ├── images
-        ├── image_*.jpg
-        └── ...
-    └── labels
-        ├── label_*.txt
-        └── ...
+|   ├── images
+|   |   ├── image_*.jpg
+|   |   └── ...
+|   └── labels
+|       ├── label_*.txt
+|       └── ...
 └── valid
     ├── images
-        ├── image_*.jpg
-        └── ...
+    |   ├── image_*.jpg
+    |   └── ...
     └── labels    
         ├── label_*.txt
         └── ...
