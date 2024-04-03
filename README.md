@@ -6,14 +6,14 @@ In this repository you will find an object detection datasets generator (YOLO fo
 - Python packages: `pip3 install -r requirements.txt`
 - Install Airsim  
     ```
-    git clone https://github.com/microsoft/AirSim
-    cd AirSim
+    git clone https://bitbucket.org/fadacatec-ondemand/airsim
+    cd airsim
     ./build.sh
-    ./setup.sh  
+    ./setup.sh   
     ```
 - Install Python client
     ```
-    cd AirSim/PythonClient
+    cd airsim/PythonClient
     pip3 install msgpack-rpc-python
     pip3 install .
     ```
