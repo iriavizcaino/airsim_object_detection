@@ -1,10 +1,3 @@
 airsim
-cv2
-shutil
-time
-os
-random
 numpy
-glob
-math
 ultralytics

@@ -12,8 +12,8 @@ import math
 
 get_width = lambda cv2_img : (cv2_img.shape[1])
 get_height = lambda cv2_img : (cv2_img.shape[0])
-DET_OBJ_NAME = '10285_Fire_Extinguisher_v3_iterations-2_2'
-sphere_name = 'Inverted_Sphere_9'
+DET_OBJ_NAME = 'Fire_Extinguisher_2'
+sphere_name = 'Inverted_Sphere'
 
 def yolo_format(det,png):
 

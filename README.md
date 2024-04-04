@@ -17,7 +17,7 @@ In this repository you will find an object detection datasets generator (YOLO fo
     pip3 install msgpack-rpc-python
     pip3 install .
     ```
-- Install Unreal Engine. 
+- Install Unreal Engine and airsim plugin. 
 
 ## Setup
 - Open an Unreal Project and create a sphere actor.
